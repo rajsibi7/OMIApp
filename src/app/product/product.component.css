@@ -1,0 +1,16 @@
+.product_card .card-img-top{
+    width: 150px;
+    height: 150px;
+}
+
+.card-body {
+    padding: 5px !important;
+}
+
+:host {
+    display: block !important;
+  }
+
+.productComponent {
+    margin-top: 20px;
+}

@@ -1,0 +1,103 @@
+<div class="container-fluid productComponent">
+    <div class="row">
+      <div class="col-md-6">
+        <app-alerttype1></app-alerttype1>
+      </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+               <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary float-right toOpnAddPrdMdl" data-toggle="modal" data-target="#appProductModal">
+                Add Product
+            </button>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-2 pd_tb_15" *ngFor="let list of productListData;index as i">
+            <div class="card product_card">
+                <img class="card-img-top mx-auto" src="../../assets/images/no-product-photo.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title text-center text-capitalize">{{list.productName}}</h5>
+                    <p class="card-text text-center">
+                        Quantity: {{list.availableQuantity}}
+                    </p>
+                    <p class="text-center">
+                        <button class="btn btn-primary btn-sm mx-auto" [disabled]="list.availableQuantity <= 0" data-toggle="modal" data-target="#orderModal" (click)="setdatafunc(list)">Order</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+  <!-- Modal -->
+  <div class="modal fade appProductModal" id="appProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" #addproductModal>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  (ngSubmit)="addProduct()" #documentEditForm="ngForm">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" class="form-control" id="productName"
+                           required maxlength="50" [(ngModel)]="productFormData.productName" name="productName">
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Product Quantity</label>
+                    <input type="number" class="form-control" id="availableQuantity"
+                           required min="0" max="1000" [(ngModel)]="productFormData.availableQuantity" name="availableQuantity">
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+           
+          <button type="button" class="btn btn-secondary" #closebutton data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary btn-addproduct" (click)="documentEditForm.ngSubmit.emit()"
+           [disabled]="!documentEditForm.form.valid || productFormData.availableQuantity <= 0">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   <!-- order product -->
+   <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true" #orderproduct>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderModalLabel">Order Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  (ngSubmit)="orderProduct()" #orderForm="ngForm">
+                <div class="form-group">
+                    <label for="name">Product Name: {{orderData?.existingData?.productName}}</label>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Available Quantity: {{orderData?.existingData?.availableQuantity}}</label>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Order Quantity</label>
+                    <input type="number" class="form-control" id="orderQuantity"
+                           required min="0" max="1000" [(ngModel)]="orderData.quantity" name="orderQuantity">
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+           
+          <button type="button" class="btn btn-secondary" #orderModalClose data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="orderForm.ngSubmit.emit()"
+           [disabled]="!orderForm.form.valid || orderData.quantity <= 0 || orderData?.existingData?.availableQuantity < orderData.quantity || orderData.quantity % 1 !== 0">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
